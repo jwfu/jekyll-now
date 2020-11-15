@@ -6,7 +6,7 @@
 name: jwfu
 
 # Short bio or description (displayed in the header)
-description:
+description: Fintech Business Analyst
 
 # URL of your avatar or profile pic (you could use your GitHub profile pic)
 avatar: https://avatars1.githubusercontent.com/u/16512278?v=3&s=460
@@ -28,8 +28,6 @@ footer-links:
   twitter:
   stackoverflow: # your stackoverflow profile, e.g. "users/50476/bart-kiers"
   youtube: # channel/<your_long_string> or user/<user-name>
-  googleplus: u/0/+JunWeiFu
-
 
 # Enter your Disqus shortname (not your username) to enable commenting on posts
 # You can find your shortname on the Settings page of your Disqus account
