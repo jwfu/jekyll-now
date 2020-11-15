@@ -8,3 +8,5 @@ Here in the UK, large ETFs are usually offer both accumulating and distributing 
 ![_config.yml]({{ site.baseurl }}/images/spyTotalReturn.png)
 
 I couldn't to find an easy way to determine total return for arbitrary stocks, so I wrote a small tool that uses [AlphaVantage through Pandas] (https://pandas-datareader.readthedocs.io/en/latest/readers/alphavantage.html) data.
+
+The tool is available using `pip install gainz-jwf`.  The code is hosted in [Github](https://github.com/jwfu/gainz).
