@@ -1,0 +1,31 @@
+I"Ä
+<p>Here in the UK, there are many</p>
+
+<p>In a past post several years ago, <a href="/aws-s3-and-glacier-for-super-cheap-and-easy-backups/">I described</a> my backup strategy of using AWS Glacier as my offsite backup in favour of running a NAS.</p>
+
+<p>Although AWS specifies an annual data durability of 99.999999999% (9 9â€™s), because I was using the <code>aws s3 sync</code> command which determines which files to sync by modified date and file size, I was a bit worried that silent data corruption would result in damaged files over time.</p>
+
+<p>To investigate, I wanted to randomly thaw out some files in and check their integrity vs my locally-available copies.  This was achieved through boto3 in an ipynb which can be downloaded from this <a href="https://gist.github.com/jwfu/45c347991dde7c6c3544aac33cdbcf66">gist</a>.</p>
+
+<h1 id="notebook-features">Notebook Features</h1>
+
+<p>The notebook provides tools to:</p>
+
+<ul>
+  <li>Build a random sample of files from a local location that will be thawed in remote;</li>
+  <li>Invoke <code>S3.Client.restore_object</code> to thaw the files;</li>
+  <li>Download the files once restored;</li>
+  <li>Compute SHA1s of both local and remote; and</li>
+  <li>Compare the two sets of hashes to check file integrity.</li>
+</ul>
+
+<p>I also included a helper utility to pickle/depickle the file list as it can take up to several days to restore files, based on the retrieval option selected.  Being cheap and not in a hurry, I selected the <code>Bulk</code> option with a 48h SLA, although I noted that the files were often available next-day.</p>
+
+<h1 id="results">Results</h1>
+
+<p>I used the notebook to thaw ~1% of my files (~50 000) objects and found <em>zero</em> examples where the hashes failed to match.  This gave me confidence that silent data corruption is rare enough to not be a worry in my application.</p>
+
+<h1 id="other-notes">Other Notes</h1>
+
+<p>I came across <a href="https://github.com/aws/aws-cli/issues/3415">this interesting discussion</a> about the limitations of <code>aws s3 sync</code>, particularly when synchronizing from remote to local.  One of the proposed solutions was doing hash comparison between local and remote to determine which files to update.  Unfortuately, as noted in the thread, S3 only stores the MD5 of a file as an <code>etag</code> when the file is uploaded in 1 piece.  <a href="https://www.npmjs.com/package/@akud/aws-s3-sync-by-hash">@akud</a> has built node implementation of this, and I hope there will be better support of this sync method in the future.  <a href="https://github.com/aws/aws-cli/labels/s3syncstrategy">This tag</a> also tracks issues related to sync strategy, and notes some other features I hope will be incorporated in the future.</p>
+:ET
